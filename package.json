@@ -1,0 +1,20 @@
+{
+  "name": "cv",
+  "module": "index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@iconify-json/devicon-plain": "^1.1.18",
+    "@iconify-json/simple-icons": "^1.1.76",
+    "@iconify-json/tabler": "^1.1.96",
+    "@unocss/cli": "^0.57.1",
+    "@unocss/preset-icons": "^0.57.1",
+    "rustywind": "^0.20.0",
+    "unocss": "^0.57.1"
+  },
+  "scripts": {
+    "bld": "unocss",
+    "dev": "unocss --watch",
+    "min": "unocss --minify",
+    "rw": "rustywind --write ."
+  }
+}
