@@ -31,7 +31,13 @@ markup::define! {
 }
 
 markup::define! {
-    Experience(date: &'static str, href: &'static str, color: &'static str, name: &'static str, items: Vec<&'static str>) {
+    Experience(
+        date: &'static str,
+        href: &'static str,
+        color: &'static str,
+        name: &'static str,
+        items: Vec<&'static str>,
+    ) {
         li {
             p[class="text-sm text-gray-500 print:text-xs"] { @date }
             a[href=href,target="_blank",class=color] {
@@ -190,8 +196,11 @@ fn main() -> Result<(), Box<dyn Error>> {
             color: "a-neutral",
             name: "IT Instituttet",
             items: vec![
-                "Developed the backend for a cloud-based property management system (PMS), that targets the hospitality industry.",
-                "Worked with many different aspects of software development, date and time management, authorisation and authentication, APIs, and integration with hardware systems such as Nets payment terminals and Axis network door controllers.",
+                "Developed the backend for a cloud-based property management system (PMS),
+                that targets the hospitality industry.",
+                "Worked with many different aspects of software development, date and time management,
+                authorisation and authentication, APIs, and integration with hardware systems such as Nets payment
+                terminals and Axis network door controllers.",
             ],
         },
         Experience {
@@ -200,7 +209,8 @@ fn main() -> Result<(), Box<dyn Error>> {
             color: "a-green",
             name: "MindKey",
             items: vec![
-                "Developed a number of Azure Functions for various features, generating error reports, synchronising data between services.",
+                "Developed a number of Azure Functions for various features, generating error reports,
+                synchronising data between services.",
             ],
         },
         Experience {
@@ -218,9 +228,12 @@ fn main() -> Result<(), Box<dyn Error>> {
             color: "a-sky",
             name: "EazyProject",
             items: vec![
-                "Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform, and bring it to the cloud.",
-                "Built a multi-tenant server that can manage multiple databases with differing schemas. Supporting OAuth 2.0, OpenID Connect, and a GraphQL API.",
-                "Later got the role of Tech Lead and responsibility of the company's tech stack, software infrastructure, DevOps, and developer training.",
+                "Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform,
+                and bring it to the cloud.",
+                "Built a multi-tenant server that can manage multiple databases with differing schemas.
+                Supporting OAuth 2.0, OpenID Connect, and a GraphQL API.",
+                "Later got the role of Tech Lead and responsibility of the company's tech stack,
+                software infrastructure, DevOps, and developer training.",
             ],
         },
     ];
@@ -232,10 +245,14 @@ fn main() -> Result<(), Box<dyn Error>> {
                 meta[charset="utf-8"];
                 meta[name="viewport",content="width=device-width,initial-scale=1"];
                 title { "Dan Bluhm Hansen - CV" }
-                link[rel="stylesheet",type="text/css",href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"];
+                link[
+                    rel="stylesheet",
+                    type="text/css",
+                    href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"
+                ];
                 link[rel="stylesheet",type="text/css",href="site.css"];
             }
-            body[class="container p-4 mx-auto min-w-full max-w-screen-lg min-h-screen sm:p-8 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900"] {
+            body[class="body"] {
                 header[class="flex flex-row justify-between items-center"] {
                     h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
                 }
@@ -245,7 +262,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                             width="640",
                             height="640",
                             src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
-                            srcset="https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,https://danbluhmhansen.github.io/cv/profile_md.avif 320w,https://danbluhmhansen.github.io/cv/profile_lg.avif 640w",
+                            srcset="
+                                https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
+                                https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
+                                https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
+                            ",
                             alt="Bald white male, with short full beard, dressed in a navy blazer and gray shirt."
                         ];
                         section[class="flex flex-col gap-2"] { @for button in &buttons { @button } }
@@ -265,12 +286,16 @@ fn main() -> Result<(), Box<dyn Error>> {
                     main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
                         section[class="flex flex-col gap-4 print:gap-2"] {
                             h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Profile" }
-                            p[class="print:text-xs"] { "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others." }
+                            p[class="print:text-xs"] {
+                                "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others."
+                            }
                             h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Experience" }
                             ol[class="space-y-2"] {
                                 li {
                                     p[class="text-sm text-gray-500 print:text-xs"] { "September 2015" }
-                                    h3[class="inline text-lg print:text-base"] { "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology" }
+                                    h3[class="inline text-lg print:text-base"] {
+                                        "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology"
+                                    }
                                 }
                                 @for experience in &experiences { @experience }
                             }
@@ -282,13 +307,11 @@ fn main() -> Result<(), Box<dyn Error>> {
                         href="https://github.com/danbluhmhansen/cv",
                         target="_blank",
                         "aria-label"="Source code",
-                        class="flex flex-row items-center rounded-sm focus:ring focus:ring-blue-500 focus:outline-none focus:ring-offset-3 focus:dark:ring-offset-stone-900"
+                        class="btm-i"
                     ] { span[class="w-8 h-8 i-simple-icons-github"]{} }
-                    button[
-                        onclick="window.print();",
-                        "aria-label"="Print page",
-                        class="inline-flex rounded-sm focus:ring focus:ring-blue-500 focus:outline-none focus:ring-offset-3 focus:dark:ring-offset-stone-900 bg-transparent"
-                    ] { span[class="w-8 h-8 i-tabler-printer"]{} }
+                    button[onclick="window.print();","aria-label"="Print page",class="btm-i"] {
+                        span[class="w-8 h-8 i-tabler-printer"]{}
+                    }
                 }
             }
         }
