@@ -84,7 +84,7 @@ markup::define! {
                 ];
                 link[rel="stylesheet",type="text/css",href="site.css"];
             }
-            body[class="container min-h-screen min-w-full p-4 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900 sm:p-8"] {
+            body[class="container p-4 min-w-full min-h-screen sm:p-8 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900"] {
                 div[class="mx-auto max-w-screen-lg"] {
                     header[class="flex flex-row justify-between items-center"] {
                         h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
@@ -92,8 +92,8 @@ markup::define! {
                             div[class=format!("w-8 h-8 {flag}")]{}
                         }
                     }
-                    div[class="sm:grid gap-8 py-8 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3 print:gap-4"] {
-                        aside[class="flex flex-col items-center gap-4 sm:col-span-1 print:col-span-1"] {
+                    div[class="grid gap-8 py-8 sm:grid-cols-3 print:gap-4"] {
+                        aside[class="flex flex-col gap-4 items-center"] {
                             img[
                                 width="320",
                                 height="320",
@@ -119,7 +119,7 @@ markup::define! {
                                 }
                             }
                         }
-                        main[class="flex justify-center sm:col-span-1 md:col-span-2 print:col-span-2"] {
+                        main[class="flex justify-center sm:col-span-2"] {
                             section[class="flex flex-col gap-4 print:gap-2"] {
                                 h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { @profile_h }
                                 p[class="print:text-xs"] { @profile }
