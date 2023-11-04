@@ -171,7 +171,14 @@ markup::define! {
 
 fn main() -> Result<(), Box<dyn Error>> {
     Command::new("sh").arg("-c").arg("bun install").output()?;
-    Command::new("sh").arg("-c").arg("bun run bld").output()?;
+    Command::new("sh")
+        .arg("-c")
+        .arg(if cfg!(debug_assertions) {
+            "bun run bld"
+        } else {
+            "bun run min"
+        })
+        .output()?;
 
     let buttons_en = vec![
         Button {
