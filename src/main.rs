@@ -87,12 +87,12 @@ markup::define! {
                             div[class=format!("w-8 h-8 {flag}")]{}
                         }
                     }
-                    div[class="grid gap-8 py-8 sm:grid-cols-3 print:grid-cols-3 print:gap-4"] {
-                        aside[class="flex flex-col col-span-3 gap-4 sm:col-span-1 print:col-span-1"] {
+                    div[class="sm:grid gap-8 py-8 sm:grid-cols-2 md:grid-cols-3 print:grid-cols-3 print:gap-4"] {
+                        aside[class="flex flex-col items-center gap-4 sm:col-span-1 print:col-span-1"] {
                             img[
-                                width="640",
-                                height="640",
-                                src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
+                                width="320",
+                                height="320",
+                                src="https://danbluhmhansen.github.io/cv/profile_md.avif",
                                 srcset="
                                     https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
                                     https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
@@ -100,7 +100,7 @@ markup::define! {
                                 ",
                                 alt=img_alt
                             ];
-                            section[class="flex flex-col gap-2"] { @for button in buttons { @button } }
+                            section[class="flex flex-col gap-2 w-full"] { @for button in buttons { @button } }
                             section {
                                 h2[class="text-lg print:text-base"] { @skills_h }
                                 div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
@@ -114,7 +114,7 @@ markup::define! {
                                 }
                             }
                         }
-                        main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
+                        main[class="flex justify-center sm:col-span-1 md:col-span-2 print:col-span-2"] {
                             section[class="flex flex-col gap-4 print:gap-2"] {
                                 h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { @profile_h }
                                 p[class="print:text-xs"] { @profile }
