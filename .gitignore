@@ -1,4 +1,5 @@
 /target
 node_modules/
-/_site/index.html
 /_site/site.css
+/_site/index.html
+/_site/da.html

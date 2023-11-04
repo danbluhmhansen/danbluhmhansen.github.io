@@ -48,11 +48,109 @@ markup::define! {
     }
 }
 
+markup::define! {
+    Page<'a>(
+        lang: &'a str,
+        lang_a: &'a str,
+        lang_l: &'a str,
+        flag: &'a str,
+        img_alt: &'a str,
+        buttons: Vec<Button>,
+        skills_h: &'a str,
+        skills: &'a Vec<Skill>,
+        hobbies_h: &'a str,
+        hobbies: Vec<Hobby>,
+        profile_h: &'a str,
+        profile: &'a str,
+        exp_h: &'a str,
+        edu: &'a str,
+        experiences: Vec<Experience>,
+    ) {
+        @markup::doctype()
+        html[lang=lang,class="dark:text-white dark:bg-slate-900"] {
+            head {
+                meta[charset="utf-8"];
+                meta[name="viewport",content="width=device-width,initial-scale=1"];
+                title { "Dan Bluhm Hansen - CV" }
+                link[
+                    rel="stylesheet",
+                    type="text/css",
+                    href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"
+                ];
+                link[rel="stylesheet",type="text/css",href="site.css"];
+            }
+            body[class="container min-h-screen min-w-full p-4 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900 sm:p-8"] {
+                div[class="mx-auto max-w-screen-lg"] {
+                    header[class="flex flex-row justify-between items-center"] {
+                        h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
+                        a[href=lang_a,"aria-label"=lang_l,class="print:hidden"] {
+                            div[class=format!("w-8 h-8 {flag}")]{}
+                        }
+                    }
+                    div[class="grid gap-8 py-8 sm:grid-cols-3 print:grid-cols-3 print:gap-4"] {
+                        aside[class="flex flex-col col-span-3 gap-4 sm:col-span-1 print:col-span-1"] {
+                            img[
+                                width="640",
+                                height="640",
+                                src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
+                                srcset="
+                                    https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
+                                    https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
+                                    https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
+                                ",
+                                alt=img_alt
+                            ];
+                            section[class="flex flex-col gap-2"] { @for button in buttons { @button } }
+                            section {
+                                h2[class="text-lg print:text-base"] { @skills_h }
+                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
+                                    @for skill in *skills { @skill }
+                                }
+                            }
+                            section {
+                                h2[class="text-lg print:text-base"] { @hobbies_h }
+                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
+                                    @for hobby in hobbies { @hobby }
+                                }
+                            }
+                        }
+                        main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
+                            section[class="flex flex-col gap-4 print:gap-2"] {
+                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { @profile_h }
+                                p[class="print:text-xs"] { @profile }
+                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { @exp_h }
+                                ol[class="space-y-2"] {
+                                    li {
+                                        p[class="text-sm text-gray-500 print:text-xs"] { "September 2015" }
+                                        h3[class="inline text-lg print:text-base"] { @edu }
+                                    }
+                                    @for experience in experiences { @experience }
+                                }
+                            }
+                        }
+                    }
+                    footer[class="flex flex-row gap-2 justify-end print:hidden"] {
+                        a[
+                            href="https://github.com/danbluhmhansen/danbluhmhansen.github.io",
+                            target="_blank",
+                            "aria-label"="Source code",
+                            class="btm-i"
+                        ] { span[class="w-8 h-8 i-simple-icons-github"]{} }
+                        button[onclick="window.print();","aria-label"="Print page",class="btm-i"] {
+                            span[class="w-8 h-8 i-tabler-printer"]{}
+                        }
+                    }
+                }
+            }
+        }
+    }
+}
+
 fn main() -> Result<(), Box<dyn Error>> {
     Command::new("sh").arg("-c").arg("bun install").output()?;
     Command::new("sh").arg("-c").arg("bun run bld").output()?;
 
-    let buttons = vec![
+    let buttons_en = vec![
         Button {
             href: "mailto:exempts_chill_0c@icloud.com",
             icon: "i-tabler-mail",
@@ -73,7 +171,28 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
     ];
 
-    let skills = vec![
+    let buttons_da = vec![
+        Button {
+            href: "mailto:exempts_chill_0c@icloud.com",
+            icon: "i-tabler-mail",
+            name: "Kontakt",
+            alt: "exempts_chill_0c@icloud.com",
+        },
+        Button {
+            href: "https://github.com/danbluhmhansen",
+            icon: "i-simple-icons-github",
+            name: "GitHub",
+            alt: "github.com/danbluhmhansen",
+        },
+        Button {
+            href: "https://linkedin.com/in/dan-hansen-2b555915b",
+            icon: "i-simple-icons-linkedin",
+            name: "LinkedIn",
+            alt: "linkedin.com/in/dan-hansen-2b555915b",
+        },
+    ];
+
+    let skills = &vec![
         Skill {
             href: "https://learn.microsoft.com/en-us/aspnet/core",
             name: "ASP.NET",
@@ -166,7 +285,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
     ];
 
-    let hobbies = vec![
+    let hobbies_en = vec![
         Hobby {
             icon: "i-tabler-run",
             name: "Running",
@@ -189,7 +308,30 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
     ];
 
-    let experiences = vec![
+    let hobbies_da = vec![
+        Hobby {
+            icon: "i-tabler-run",
+            name: "Løb",
+        },
+        Hobby {
+            icon: "i-tabler-device-gamepad-2",
+            name: "Gaming",
+        },
+        Hobby {
+            icon: "i-simple-icons-linux",
+            name: "Linux",
+        },
+        Hobby {
+            icon: "i-tabler-devices-pc",
+            name: "PC-bygning",
+        },
+        Hobby {
+            icon: "i-tabler-keyboard",
+            name: "Mekaniske tastaturer",
+        },
+    ];
+
+    let experiences_en = vec![
         Experience {
             date: "May 2017",
             href: "https://itinstituttet.dk",
@@ -205,7 +347,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
         Experience {
             date: "September 2020",
-            href: "https://mindkey.com/",
+            href: "https://mindkey.com",
             color: "a-green",
             name: "MindKey",
             items: vec![
@@ -215,7 +357,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
         Experience {
             date: "December 2020",
-            href: "https://commentor.dk/",
+            href: "https://commentor.dk",
             color: "a-orange",
             name: "Commentor",
             items: vec![
@@ -238,89 +380,91 @@ fn main() -> Result<(), Box<dyn Error>> {
         },
     ];
 
-    let page = markup::new! {
-        @markup::doctype()
-        html[lang="en",class="dark:text-white dark:bg-slate-900"] {
-            head {
-                meta[charset="utf-8"];
-                meta[name="viewport",content="width=device-width,initial-scale=1"];
-                title { "Dan Bluhm Hansen - CV" }
-                link[
-                    rel="stylesheet",
-                    type="text/css",
-                    href="https://cdn.jsdelivr.net/npm/@unocss/reset/tailwind-compat.min.css"
-                ];
-                link[rel="stylesheet",type="text/css",href="site.css"];
-            }
-            body[class="container min-h-screen min-w-full p-4 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900 sm:p-8"] {
-                div[class="mx-auto max-w-screen-lg"] {
-                    header[class="flex flex-row justify-between items-center"] {
-                        h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
-                    }
-                    div[class="grid gap-8 py-8 sm:grid-cols-3 print:grid-cols-3 print:gap-4"] {
-                        aside[class="flex flex-col col-span-3 gap-4 sm:col-span-1 print:col-span-1"] {
-                            img[
-                                width="640",
-                                height="640",
-                                src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
-                                srcset="
-                                    https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
-                                    https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
-                                    https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
-                                ",
-                                alt="Bald white male, with short full beard, dressed in a navy blazer and gray shirt."
-                            ];
-                            section[class="flex flex-col gap-2"] { @for button in &buttons { @button } }
-                            section {
-                                h2[class="text-lg print:text-base"] { "Skills" }
-                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
-                                    @for skill in &skills { @skill }
-                                }
-                            }
-                            section {
-                                h2[class="text-lg print:text-base"] { "Hobbies" }
-                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
-                                    @for hobby in &hobbies { @hobby }
-                                }
-                            }
-                        }
-                        main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
-                            section[class="flex flex-col gap-4 print:gap-2"] {
-                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Profile" }
-                                p[class="print:text-xs"] {
-                                    "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others."
-                                }
-                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Experience" }
-                                ol[class="space-y-2"] {
-                                    li {
-                                        p[class="text-sm text-gray-500 print:text-xs"] { "September 2015" }
-                                        h3[class="inline text-lg print:text-base"] {
-                                            "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology"
-                                        }
-                                    }
-                                    @for experience in &experiences { @experience }
-                                }
-                            }
-                        }
-                    }
-                    footer[class="flex flex-row gap-2 justify-end print:hidden"] {
-                        a[
-                            href="https://github.com/danbluhmhansen/cv",
-                            target="_blank",
-                            "aria-label"="Source code",
-                            class="btm-i"
-                        ] { span[class="w-8 h-8 i-simple-icons-github"]{} }
-                        button[onclick="window.print();","aria-label"="Print page",class="btm-i"] {
-                            span[class="w-8 h-8 i-tabler-printer"]{}
-                        }
-                    }
-                }
-            }
-        }
-    };
+    let experiences_da = vec![
+        Experience {
+            date: "Maj 2017",
+            href: "https://itinstituttet.dk",
+            color: "a-neutral",
+            name: "IT Instituttet",
+            items: vec![
+                "Udviklede backend til et cloud-baseret ejendomsadministration system (PMS), der er målrettet mod hotel-
+                og restaurationsbranchen.",
+                "Arbejdede med mange forskellige aspekter af softwareudvikling, dato- og tidsstyring, authorization og
+                authentication API'er og integration med hardwaresystemer som Nets betalingsterminaler og Axis
+                netværksdørcontrollere.",
+            ],
+        },
+        Experience {
+            date: "September 2020",
+            href: "https://mindkey.dk",
+            color: "a-green",
+            name: "MindKey",
+            items: vec![
+                "Udviklet en række Azure Functions til forskellige funktioner, generering af fejlrapporter,
+                synkronisering af data mellem tjenester.",
+            ],
+        },
+        Experience {
+            date: "December 2020",
+            href: "https://commentor.dk",
+            color: "a-orange",
+            name: "Commentor",
+            items: vec![
+                "Del af et stort platformslift for PensionDanmark på tværs flere projekter, CRM, login og mere.",
+            ],
+        },
+        Experience {
+            date: "Januar 2022",
+            href: "https://eazyproject.net",
+            color: "a-sky",
+            name: "EazyProject",
+            items: vec![
+                "Lead på et platformslift for at opgradere en ASP.NET Web Forms-app til en moderne platform, og bringe
+                den i skyen.",
+                "Bygget en multi-tenant server, der kan administrere flere databaser med forskellige skemaer.
+                Understøtter OAuth 2.0, OpenID Connect, og med et GraphQL API.",
+                "Senere fik rollen som Tech Lead og ansvar for virksomhedens tech stack, softwareinfrastruktur, DevOps
+                og uddannelse af udviklere.",
+            ],
+        },
+    ];
 
     fs::create_dir_all("_site")?;
-    fs::write("_site/index.html", page.to_string())?;
+    fs::write("_site/index.html", Page {
+        lang: "en",
+        lang_a: "da.html",
+        lang_l: "Gå til engelsk site",
+        flag: "i-flag-dk-4x3",
+        img_alt: "Bald white male, with short full beard, dressed in a navy blazer and gray shirt.",
+        buttons: buttons_en,
+        skills_h: "Skills",
+        skills,
+        hobbies_h: "Hobbies",
+        hobbies: hobbies_en,
+        profile_h: "Profile",
+        profile: "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others.",
+        exp_h: "Experience",
+        edu: "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology",
+        experiences: experiences_en,
+    }.to_string())?;
+
+    fs::write("_site/da.html", Page {
+        lang: "da",
+        lang_a: "index.html",
+        lang_l: "Go to danish site",
+        flag: "i-flag-gb-4x3",
+        img_alt: "Skaldet hvid mand, med kort fuldskæg, klædt i en marineblå blazer og grå skjorte.",
+        buttons: buttons_da,
+        skills_h: "Færdigheder",
+        skills,
+        hobbies_h: "Hobbyer",
+        hobbies: hobbies_da,
+        profile_h: "Profil",
+        profile: "Jeg er en passioneret softwareudvikler, der stræber efter at bygge sikre, stabile og hurtige softwareløsninger. Jeg bruger meget af min tid på at undersøge de nyeste frameworks og værktøjer, så jeg kan holde trit med den evigt udviklende softwareverden. Jeg elsker at lære og dele det jeg har lært med mine kolleger, så vi alle kan nyde at udvikle software sammen. Det jeg bedst kan lide ved softwareudvikling, er at bygge værktøjer og fundamenter for andre, så de kan fokusere på implementering og forretningslogik. Som person er jeg beskeden, rolig og altid villig til at hjælpe andre.",
+        exp_h: "Erfaring",
+        edu: " Datamatiker - Erhvervsakademi Sjælland ",
+        experiences: experiences_da,
+    }.to_string())?;
 
     Ok(())
 }

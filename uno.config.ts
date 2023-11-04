@@ -13,6 +13,7 @@ export default defineConfig({
     presetIcons({
       collections: {
         "devicon-plain": () => import("@iconify-json/devicon-plain/icons.json").then((i) => i.default),
+        flag: () => import("@iconify-json/flag/icons.json").then((i) => i.default),
         "simple-icons": () => import("@iconify-json/simple-icons/icons.json").then((i) => i.default),
         tabler: () => import("@iconify-json/tabler/icons.json").then((i) => i.default),
       },

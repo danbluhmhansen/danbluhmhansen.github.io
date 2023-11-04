@@ -4,6 +4,7 @@
   "type": "module",
   "devDependencies": {
     "@iconify-json/devicon-plain": "^1.1.18",
+    "@iconify-json/flag": "^1.1.39",
     "@iconify-json/simple-icons": "^1.1.76",
     "@iconify-json/tabler": "^1.1.96",
     "@unocss/cli": "^0.57.1",
