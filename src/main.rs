@@ -5,12 +5,7 @@ markup::define! {
         a[
             href=href,
             target="_blank",
-            class="
-                flex flex-row gap-1 justify-center items-center p-2 bg-gradient-to-r from-cyan-300 to-blue-300
-                rounded-xl dark:from-cyan-500 dark:to-blue-500 hover:from-cyan-400 hover:to-blue-400 focus:ring
-                focus:outline-none active:from-cyan-500 active:to-blue-500 print:hidden dark:hover:from-cyan-600
-                dark:hover:to-blue-600 dark:active:from-cyan-700 dark:active:to-blue-700
-            ",
+            class="flex flex-row gap-1 justify-center items-center p-2 bg-gradient-to-r from-cyan-300 to-blue-300 rounded-xl dark:from-cyan-500 dark:to-blue-500 hover:from-cyan-400 hover:to-blue-400 focus:ring focus:outline-none active:from-cyan-500 active:to-blue-500 print:hidden dark:hover:from-cyan-600 dark:hover:to-blue-600 dark:active:from-cyan-700 dark:active:to-blue-700",
         ] {
             span[class=format!("w-6 h-6 stroke-2 {icon}")]{}
             @name
@@ -19,15 +14,23 @@ markup::define! {
     }
 }
 
+impl Button {
+    fn new(href: &'static str, icon: &'static str, name: &'static str, alt: &'static str) -> Self {
+        Self {
+            href,
+            icon,
+            name,
+            alt,
+        }
+    }
+}
+
 markup::define! {
     Skill(href: &'static str, name: &'static str, icon: Option<&'static str>, color: Option<&'static str>) {
         a[
             href=href,
             target="_blank",
-            class="
-                flex flex-row items-center rounded-sm focus:ring focus:ring-blue-500 focus:outline-none
-                focus:ring-offset-3 focus:dark:ring-offset-stone-900
-            ",
+            class="flex flex-row items-center rounded-sm focus:ring focus:ring-blue-500 focus:outline-none focus:ring-offset-3 focus:dark:ring-offset-stone-900",
         ] {
             @if let Some((icon, color)) = icon.zip(*color) {
                 span[class=format!("{icon} mr-1 h-8 w-8 {color} print:hidden")]{}
@@ -37,12 +40,35 @@ markup::define! {
     }
 }
 
+impl Skill {
+    fn new(href: &'static str, name: &'static str) -> Self {
+        Self {
+            href,
+            name,
+            icon: None,
+            color: None,
+        }
+    }
+
+    fn icon(mut self, icon: &'static str, color: &'static str) -> Self {
+        self.icon = Some(icon);
+        self.color = Some(color);
+        self
+    }
+}
+
 markup::define! {
     Hobby(icon: &'static str, name: &'static str) {
         div[class="flex flex-row items-center rounded-sm"] {
             span[class=format!("mr-1 w-8 h-8 {icon} print:hidden")]{}
             @name
         }
+    }
+}
+
+impl Hobby {
+    fn new(icon: &'static str, name: &'static str) -> Self {
+        Self { icon, name }
     }
 }
 
@@ -61,6 +87,28 @@ markup::define! {
             }
             ul[class="list-disc list-inside print:text-xs"] { @for item in items { li { @item } } }
         }
+    }
+}
+
+impl Experience {
+    fn new(
+        date: &'static str,
+        href: &'static str,
+        color: &'static str,
+        name: &'static str,
+    ) -> Self {
+        Self {
+            date,
+            href,
+            color,
+            name,
+            items: vec![],
+        }
+    }
+
+    fn item(mut self, item: &'static str) -> Self {
+        self.items.push(item);
+        self
     }
 }
 
@@ -99,10 +147,9 @@ markup::define! {
                 ];
                 link[rel="stylesheet",type="text/css",href="site.css"];
             }
-            body[class="
-                container p-4 min-w-full min-h-screen sm:p-8 dark:bg-gradient-to-br dark:from-slate-900
-                dark:to-stone-900
-            "] {
+            body[
+                class="container p-4 min-w-full min-h-screen sm:p-8 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900"
+            ] {
                 div[class="mx-auto max-w-screen-lg"] {
                     header[class="flex flex-row justify-between items-center"] {
                         h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
@@ -116,11 +163,7 @@ markup::define! {
                                 width="320",
                                 height="320",
                                 src="https://danbluhmhansen.github.io/cv/profile_md.avif",
-                                srcset="
-                                    https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
-                                    https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
-                                    https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
-                                ",
+                                srcset="https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,https://danbluhmhansen.github.io/cv/profile_md.avif 320w,https://danbluhmhansen.github.io/cv/profile_lg.avif 640w",
                                 alt=img_alt
                             ];
                             section[class="flex flex-col gap-2 w-full"] { @for button in buttons { @button } }
@@ -181,282 +224,121 @@ fn main() -> Result<(), Box<dyn Error>> {
         .output()?;
 
     let buttons_en = vec![
-        Button {
-            href: "mailto:exempts_chill_0c@icloud.com",
-            icon: "i-tabler-mail",
-            name: "Contact",
-            alt: "exempts_chill_0c@icloud.com",
-        },
-        Button {
-            href: "https://github.com/danbluhmhansen",
-            icon: "i-simple-icons-github",
-            name: "GitHub",
-            alt: "github.com/danbluhmhansen",
-        },
-        Button {
-            href: "https://linkedin.com/in/dan-hansen-2b555915b",
-            icon: "i-simple-icons-linkedin",
-            name: "LinkedIn",
-            alt: "linkedin.com/in/dan-hansen-2b555915b",
-        },
+        Button::new(
+            "mailto:exempts_chill_0c@icloud.com",
+            "i-tabler-mail",
+            "Contact",
+            "exempts_chill_0c@icloud.com",
+        ),
+        Button::new(
+            "https://github.com/danbluhmhansen",
+            "i-simple-icons-github",
+            "GitHub",
+            "github.com/danbluhmhansen",
+        ),
+        Button::new(
+            "https://linkedin.com/in/dan-hansen-2b555915b",
+            "i-simple-icons-linkedin",
+            "LinkedIn",
+            "linkedin.com/in/dan-hansen-2b555915b",
+        ),
     ];
 
     let buttons_da = vec![
-        Button {
-            href: "mailto:exempts_chill_0c@icloud.com",
-            icon: "i-tabler-mail",
-            name: "Kontakt",
-            alt: "exempts_chill_0c@icloud.com",
-        },
-        Button {
-            href: "https://github.com/danbluhmhansen",
-            icon: "i-simple-icons-github",
-            name: "GitHub",
-            alt: "github.com/danbluhmhansen",
-        },
-        Button {
-            href: "https://linkedin.com/in/dan-hansen-2b555915b",
-            icon: "i-simple-icons-linkedin",
-            name: "LinkedIn",
-            alt: "linkedin.com/in/dan-hansen-2b555915b",
-        },
+        Button::new(
+            "mailto:exempts_chill_0c@icloud.com",
+            "i-tabler-mail",
+            "Kontakt",
+            "exempts_chill_0c@icloud.com",
+        ),
+        Button::new(
+            "https://github.com/danbluhmhansen",
+            "i-simple-icons-github",
+            "GitHub",
+            "github.com/danbluhmhansen",
+        ),
+        Button::new(
+            "https://linkedin.com/in/dan-hansen-2b555915b",
+            "i-simple-icons-linkedin",
+            "LinkedIn",
+            "linkedin.com/in/dan-hansen-2b555915b",
+        ),
     ];
 
     let skills = &vec![
-        Skill {
-            href: "https://learn.microsoft.com/en-us/aspnet/core",
-            name: "ASP.NET",
-            icon: Some("i-simple-icons-dotnet"),
-            color: Some("text-[#512bd4]"),
-        },
-        Skill {
-            href: "https://learn.microsoft.com/en-us/azure",
-            name: "Azure",
-            icon: Some("i-simple-icons-microsoftazure"),
-            color: Some("text-[#0078d4]"),
-        },
-        Skill {
-            href: "https://learn.microsoft.com/en-us/azure/devops",
-            name: "Azure DevOps",
-            icon: Some("i-simple-icons-azuredevops"),
-            color: Some("text-[#0078d4]"),
-        },
-        Skill {
-            href: "https://docker.com",
-            name: "Docker",
-            icon: Some("i-simple-icons-docker"),
-            color: Some("text-[#2496ed]"),
-        },
-        Skill {
-            href: "https://learn.microsoft.com/en-us/ef",
-            name: "Entity Framework",
-            icon: Some("i-devicon-plain-dot-net"),
-            color: Some("text-[#1384c8]"),
-        },
-        Skill {
-            href: "https://graphql.org",
-            name: "GraphQL",
-            icon: Some("i-simple-icons-graphql"),
-            color: Some("text-[#e10098]"),
-        },
-        Skill {
-            href: "https://oauth.net",
-            name: "OAuth 2.0",
-            icon: None,
-            color: None,
-        },
-        Skill {
-            href: "https://www.odata.org",
-            name: "OData",
-            icon: None,
-            color: None,
-        },
-        Skill {
-            href: "https://openapis.org",
-            name: "OpenAPI",
-            icon: Some("i-simple-icons-openapiinitiative"),
-            color: Some("text-[#6ba539]"),
-        },
-        Skill {
-            href: "https://openid.net/connect",
-            name: "OpenID Connect",
-            icon: Some("i-simple-icons-openid"),
-            color: Some("text-[#f78c40]"),
-        },
-        Skill {
-            href: "https://postgresql.org",
-            name: "PostgreSQL",
-            icon: Some("i-simple-icons-postgresql"),
-            color: Some("text-[#4169e1]"),
-        },
-        Skill {
-            href: "https://react.dev",
-            name: "React",
-            icon: Some("i-simple-icons-react"),
-            color: Some("text-[#61dafb]"),
-        },
-        Skill {
-            href: "https://rust-lang.org",
-            name: "Rust",
-            icon: Some("i-simple-icons-rust"),
-            color: Some("dark:text-gray-500"),
-        },
-        Skill {
-            href: "https://learn.microsoft.com/en-us/sql",
-            name: "SQL Server",
-            icon: Some("i-simple-icons-microsoftsqlserver"),
-            color: Some("text-[#cc2927]"),
-        },
-        Skill {
-            href: "https://terraform.io",
-            name: "Terraform",
-            icon: Some("i-simple-icons-terraform"),
-            color: Some("text-[#7b42bc]"),
-        },
+        Skill::new("https://learn.microsoft.com/en-us/aspnet/core", "ASP.NET")
+            .icon("i-simple-icons-dotnet", "text-[#512bd4]"),
+        Skill::new("https://learn.microsoft.com/en-us/azure", "Azure")
+            .icon("i-simple-icons-microsoftazure", "text-[#0078d4]"),
+        Skill::new(
+            "https://learn.microsoft.com/en-us/azure/devops",
+            "Azure DevOps",
+        )
+        .icon("i-simple-icons-azuredevops", "text-[#0078d4]"),
+        Skill::new("https://docker.com", "Docker").icon("i-simple-icons-docker", "text-[#2496ed]"),
+        Skill::new("https://learn.microsoft.com/en-us/ef", "Entity Framework")
+            .icon("i-devicon-plain-dot-net", "text-[#1384c8]"),
+        Skill::new("https://graphql.org", "GraphQL")
+            .icon("i-simple-icons-graphql", "text-[#e10098]"),
+        Skill::new("https://oauth.net", "OAuth 2.0"),
+        Skill::new("https://www.odata.org", "OData"),
+        Skill::new("https://openapis.org", "OpenAPI")
+            .icon("i-simple-icons-openapiinitiative", "text-[#6ba539]"),
+        Skill::new("https://openid.net/connect", "OpenID Connect")
+            .icon("i-simple-icons-openid", "text-[#f78c40]"),
+        Skill::new("https://postgresql.org", "PostgreSQL")
+            .icon("i-simple-icons-postgresql", "text-[#4169e1]"),
+        Skill::new("https://react.dev", "React").icon("i-simple-icons-react", "text-[#61dafb]"),
+        Skill::new("https://rust-lang.org", "Rust")
+            .icon("i-simple-icons-rust", "dark:text-gray-500"),
+        Skill::new("https://learn.microsoft.com/en-us/sql", "SQL Server")
+            .icon("i-simple-icons-microsoftsqlserver", "text-[#cc2927]"),
+        Skill::new("https://terraform.io", "Terraform")
+            .icon("i-simple-icons-terraform", "text-[#7b42bc]"),
     ];
 
     let hobbies_en = vec![
-        Hobby {
-            icon: "i-tabler-run",
-            name: "Running",
-        },
-        Hobby {
-            icon: "i-tabler-device-gamepad-2",
-            name: "Gaming",
-        },
-        Hobby {
-            icon: "i-simple-icons-linux",
-            name: "Linux",
-        },
-        Hobby {
-            icon: "i-tabler-devices-pc",
-            name: "PC building",
-        },
-        Hobby {
-            icon: "i-tabler-keyboard",
-            name: "Mechanical keyboards",
-        },
+        Hobby::new("i-tabler-run", "Running"),
+        Hobby::new("i-tabler-device-gamepad-2", "Gaming"),
+        Hobby::new("i-simple-icons-linux", "Linux"),
+        Hobby::new("i-tabler-devices-pc", "PC building"),
+        Hobby::new("i-tabler-keyboard", "Mechanical keyboards"),
     ];
 
     let hobbies_da = vec![
-        Hobby {
-            icon: "i-tabler-run",
-            name: "Løb",
-        },
-        Hobby {
-            icon: "i-tabler-device-gamepad-2",
-            name: "Gaming",
-        },
-        Hobby {
-            icon: "i-simple-icons-linux",
-            name: "Linux",
-        },
-        Hobby {
-            icon: "i-tabler-devices-pc",
-            name: "PC-bygning",
-        },
-        Hobby {
-            icon: "i-tabler-keyboard",
-            name: "Mekaniske tastaturer",
-        },
+        Hobby::new("i-tabler-run", "Løb"),
+        Hobby::new("i-tabler-device-gamepad-2", "Gaming"),
+        Hobby::new("i-simple-icons-linux", "Linux"),
+        Hobby::new("i-tabler-devices-pc", "PC-bygning"),
+        Hobby::new("i-tabler-keyboard", "Mekaniske tastaturer"),
     ];
 
     let experiences_en = vec![
-        Experience {
-            date: "May 2017",
-            href: "https://itinstituttet.dk",
-            color: "a-neutral",
-            name: "IT Instituttet",
-            items: vec![
-                "Developed the backend for a cloud-based property management system (PMS),
-                that targets the hospitality industry.",
-                "Worked with many different aspects of software development, date and time management,
-                authorisation and authentication, APIs, and integration with hardware systems such as Nets payment
-                terminals and Axis network door controllers.",
-            ],
-        },
-        Experience {
-            date: "September 2020",
-            href: "https://mindkey.com",
-            color: "a-green",
-            name: "MindKey",
-            items: vec![
-                "Developed a number of Azure Functions for various features, generating error reports,
-                synchronising data between services.",
-            ],
-        },
-        Experience {
-            date: "December 2020",
-            href: "https://commentor.dk",
-            color: "a-orange",
-            name: "Commentor",
-            items: vec![
-                "Part of a large platform lift for PensionDanmark across multiple projects, CRM, login, and more.",
-            ],
-        },
-        Experience {
-            date: "January 2022",
-            href: "https://eazyproject.net/en",
-            color: "a-sky",
-            name: "EazyProject",
-            items: vec![
-                "Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform,
-                and bring it to the cloud.",
-                "Built a multi-tenant server that can manage multiple databases with differing schemas.
-                Supporting OAuth 2.0, OpenID Connect, and a GraphQL API.",
-                "Later got the role of Tech Lead and responsibility of the company's tech stack,
-                software infrastructure, DevOps, and developer training.",
-            ],
-        },
+        Experience::new("May 2017", "https://itinstituttet.dk", "a-neutral", "IT Instituttet")
+            .item("Developed the backend for a cloud-based property management system (PMS), that targets the hospitality industry.")
+            .item("Worked with many different aspects of software development, date and time management, authorisation and authentication, APIs, and integration with hardware systems such as Nets payment terminals and Axis network door controllers."),
+        Experience::new("September 2020", "https://mindkey.com", "a-green", "MindKey")
+            .item("Developed a number of Azure Functions for various features, generating error reports, synchronising data between services."),
+        Experience::new("December 2020", "https://commentor.dk", "a-orange", "Commentor")
+            .item("Part of a large platform lift for PensionDanmark across multiple projects, CRM, login, and more."),
+        Experience::new("January 2022", "https://eazyproject.net/en", "a-sky", "EazyProject")
+            .item("Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform, and bring it to the cloud.")
+            .item("Built a multi-tenant server that can manage multiple databases with differing schemas. Supporting OAuth 2.0, OpenID Connect, and a GraphQL API.")
+            .item("Later got the role of Tech Lead and responsibility of the company's tech stack, software infrastructure, DevOps, and developer training."),
     ];
 
     let experiences_da = vec![
-        Experience {
-            date: "Maj 2017",
-            href: "https://itinstituttet.dk",
-            color: "a-neutral",
-            name: "IT Instituttet",
-            items: vec![
-                "Udviklede backend til et cloud-baseret ejendomsadministration system (PMS), der er målrettet mod hotel-
-                og restaurationsbranchen.",
-                "Arbejdede med mange forskellige aspekter af softwareudvikling, dato- og tidsstyring, authorization og
-                authentication API'er og integration med hardwaresystemer som Nets betalingsterminaler og Axis
-                netværksdørcontrollere.",
-            ],
-        },
-        Experience {
-            date: "September 2020",
-            href: "https://mindkey.dk",
-            color: "a-green",
-            name: "MindKey",
-            items: vec![
-                "Udviklet en række Azure Functions til forskellige funktioner, generering af fejlrapporter,
-                synkronisering af data mellem tjenester.",
-            ],
-        },
-        Experience {
-            date: "December 2020",
-            href: "https://commentor.dk",
-            color: "a-orange",
-            name: "Commentor",
-            items: vec![
-                "Del af et stort platformslift for PensionDanmark på tværs flere projekter, CRM, login og mere.",
-            ],
-        },
-        Experience {
-            date: "Januar 2022",
-            href: "https://eazyproject.net",
-            color: "a-sky",
-            name: "EazyProject",
-            items: vec![
-                "Lead på et platformslift for at opgradere en ASP.NET Web Forms-app til en moderne platform, og bringe
-                den i skyen.",
-                "Bygget en multi-tenant server, der kan administrere flere databaser med forskellige skemaer.
-                Understøtter OAuth 2.0, OpenID Connect, og med et GraphQL API.",
-                "Senere fik rollen som Tech Lead og ansvar for virksomhedens tech stack, softwareinfrastruktur, DevOps
-                og uddannelse af udviklere.",
-            ],
-        },
+        Experience::new("Maj 2017", "https://itinstituttet.dk", "a-neutral", "IT Instituttet")
+            .item("Udviklede backend til et cloud-baseret ejendomsadministration system (PMS), der er målrettet mod hotel- og restaurationsbranchen.")
+            .item("Arbejdede med mange forskellige aspekter af softwareudvikling, dato- og tidsstyring, authorization og authentication API'er og integration med hardwaresystemer som Nets betalingsterminaler og Axis netværksdørcontrollere."),
+        Experience::new("September 2020", "https://mindkey.dk", "a-green", "MindKey")
+            .item("Udviklet en række Azure Functions til forskellige funktioner, generering af fejlrapporter, synkronisering af data mellem tjenester."),
+        Experience::new("December 2020", "https://commentor.dk", "a-orange", "Commentor")
+            .item("Del af et stort platformslift for PensionDanmark på tværs flere projekter, CRM, login og mere."),
+        Experience::new("Januar 2022", "https://eazyproject.net", "a-sky", "EazyProject")
+            .item("Lead på et platformslift for at opgradere en ASP.NET Web Forms-app til en moderne platform, og bringe den i skyen.")
+            .item("Bygget en multi-tenant server, der kan administrere flere databaser med forskellige skemaer. Understøtter OAuth 2.0, OpenID Connect, og med et GraphQL API.")
+            .item("Senere fik rollen som Tech Lead og ansvar for virksomhedens tech stack, softwareinfrastruktur, DevOps og uddannelse af udviklere."),
     ];
 
     fs::create_dir_all("_site")?;
@@ -472,14 +354,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         hobbies_h: "Hobbies",
         hobbies: hobbies_en,
         profile_h: "Profile",
-        profile: "
-            I am a passionate software developer who strives to build secure, stable, and fast software solutions. I
-            spend much of my time researching the latest frameworks and tools so that I can keep up with the
-            ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can
-            all enjoy developing software together. What I like most about software development is building tools and
-            foundations for others so they can focus on implementation and business logic. As a person, I am modest,
-            calm, and always willing to help others.
-        ",
+        profile: "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others.",
         exp_h: "Experience",
         edu: "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology",
         experiences: experiences_en,
@@ -497,14 +372,7 @@ fn main() -> Result<(), Box<dyn Error>> {
         hobbies_h: "Hobbyer",
         hobbies: hobbies_da,
         profile_h: "Profil",
-        profile: "
-            Jeg er en passioneret softwareudvikler, der stræber efter at bygge sikre, stabile og hurtige
-            softwareløsninger. Jeg bruger meget af min tid på at undersøge de nyeste frameworks og værktøjer, så jeg kan
-            holde trit med den evigt udviklende softwareverden. Jeg elsker at lære og dele det jeg har lært med mine
-            kolleger, så vi alle kan nyde at udvikle software sammen. Det jeg bedst kan lide ved softwareudvikling, er
-            at bygge værktøjer og fundamenter for andre, så de kan fokusere på implementering og forretningslogik. Som
-            person er jeg beskeden, rolig og altid villig til at hjælpe andre.
-        ",
+        profile: "Jeg er en passioneret softwareudvikler, der stræber efter at bygge sikre, stabile og hurtige softwareløsninger. Jeg bruger meget af min tid på at undersøge de nyeste frameworks og værktøjer, så jeg kan holde trit med den evigt udviklende softwareverden. Jeg elsker at lære og dele det jeg har lært med mine kolleger, så vi alle kan nyde at udvikle software sammen. Det jeg bedst kan lide ved softwareudvikling, er at bygge værktøjer og fundamenter for andre, så de kan fokusere på implementering og forretningslogik. Som person er jeg beskeden, rolig og altid villig til at hjælpe andre.",
         exp_h: "Erfaring",
         edu: " Datamatiker - Erhvervsakademi Sjælland ",
         experiences: experiences_da,
