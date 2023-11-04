@@ -252,65 +252,67 @@ fn main() -> Result<(), Box<dyn Error>> {
                 ];
                 link[rel="stylesheet",type="text/css",href="site.css"];
             }
-            body[class="body"] {
-                header[class="flex flex-row justify-between items-center"] {
-                    h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
-                }
-                div[class="grid gap-8 py-8 sm:grid-cols-3 print:grid-cols-3 print:gap-4"] {
-                    aside[class="flex flex-col col-span-3 gap-4 sm:col-span-1 print:col-span-1"] {
-                        img[
-                            width="640",
-                            height="640",
-                            src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
-                            srcset="
-                                https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
-                                https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
-                                https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
-                            ",
-                            alt="Bald white male, with short full beard, dressed in a navy blazer and gray shirt."
-                        ];
-                        section[class="flex flex-col gap-2"] { @for button in &buttons { @button } }
-                        section {
-                            h2[class="text-lg print:text-base"] { "Skills" }
-                            div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
-                                @for skill in &skills { @skill }
-                            }
-                        }
-                        section {
-                            h2[class="text-lg print:text-base"] { "Hobbies" }
-                            div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
-                                @for hobby in &hobbies { @hobby }
-                            }
-                        }
+            body[class="container min-h-screen min-w-full p-4 dark:bg-gradient-to-br dark:from-slate-900 dark:to-stone-900 sm:p-8"] {
+                div[class="mx-auto max-w-screen-lg"] {
+                    header[class="flex flex-row justify-between items-center"] {
+                        h1[class="text-5xl print:text-3xl"] { "Dan Bluhm Hansen" }
                     }
-                    main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
-                        section[class="flex flex-col gap-4 print:gap-2"] {
-                            h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Profile" }
-                            p[class="print:text-xs"] {
-                                "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others."
-                            }
-                            h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Experience" }
-                            ol[class="space-y-2"] {
-                                li {
-                                    p[class="text-sm text-gray-500 print:text-xs"] { "September 2015" }
-                                    h3[class="inline text-lg print:text-base"] {
-                                        "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology"
-                                    }
+                    div[class="grid gap-8 py-8 sm:grid-cols-3 print:grid-cols-3 print:gap-4"] {
+                        aside[class="flex flex-col col-span-3 gap-4 sm:col-span-1 print:col-span-1"] {
+                            img[
+                                width="640",
+                                height="640",
+                                src="https://danbluhmhansen.github.io/cv/profile_lg.avif",
+                                srcset="
+                                    https://danbluhmhansen.github.io/cv/profile_sm.avif 160w,
+                                    https://danbluhmhansen.github.io/cv/profile_md.avif 320w,
+                                    https://danbluhmhansen.github.io/cv/profile_lg.avif 640w
+                                ",
+                                alt="Bald white male, with short full beard, dressed in a navy blazer and gray shirt."
+                            ];
+                            section[class="flex flex-col gap-2"] { @for button in &buttons { @button } }
+                            section {
+                                h2[class="text-lg print:text-base"] { "Skills" }
+                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
+                                    @for skill in &skills { @skill }
                                 }
-                                @for experience in &experiences { @experience }
+                            }
+                            section {
+                                h2[class="text-lg print:text-base"] { "Hobbies" }
+                                div[class="flex flex-wrap gap-y-2 gap-x-4 print:gap-x-2 print:gap-y-0"] {
+                                    @for hobby in &hobbies { @hobby }
+                                }
+                            }
+                        }
+                        main[class="flex col-span-3 justify-center sm:col-span-2 print:col-span-2"] {
+                            section[class="flex flex-col gap-4 print:gap-2"] {
+                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Profile" }
+                                p[class="print:text-xs"] {
+                                    "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others."
+                                }
+                                h2[class="text-3xl text-indigo-600 dark:text-indigo-300 print:text-xl"] { "Experience" }
+                                ol[class="space-y-2"] {
+                                    li {
+                                        p[class="text-sm text-gray-500 print:text-xs"] { "September 2015" }
+                                        h3[class="inline text-lg print:text-base"] {
+                                            "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology"
+                                        }
+                                    }
+                                    @for experience in &experiences { @experience }
+                                }
                             }
                         }
                     }
-                }
-                footer[class="flex flex-row gap-2 justify-end print:hidden"] {
-                    a[
-                        href="https://github.com/danbluhmhansen/cv",
-                        target="_blank",
-                        "aria-label"="Source code",
-                        class="btm-i"
-                    ] { span[class="w-8 h-8 i-simple-icons-github"]{} }
-                    button[onclick="window.print();","aria-label"="Print page",class="btm-i"] {
-                        span[class="w-8 h-8 i-tabler-printer"]{}
+                    footer[class="flex flex-row gap-2 justify-end print:hidden"] {
+                        a[
+                            href="https://github.com/danbluhmhansen/cv",
+                            target="_blank",
+                            "aria-label"="Source code",
+                            class="btm-i"
+                        ] { span[class="w-8 h-8 i-simple-icons-github"]{} }
+                        button[onclick="window.print();","aria-label"="Print page",class="btm-i"] {
+                            span[class="w-8 h-8 i-tabler-printer"]{}
+                        }
                     }
                 }
             }
