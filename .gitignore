@@ -3,3 +3,14 @@ node_modules/
 /_site/site.css
 /_site/index.html
 /_site/da.html
+
+# Devenv
+.devenv*
+devenv.local.nix
+
+# direnv
+.direnv
+
+# pre-commit
+.pre-commit-config.yaml
+
