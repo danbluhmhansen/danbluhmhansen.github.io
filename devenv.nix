@@ -11,6 +11,8 @@
     pkgs.git
     pkgs.bun
     pkgs.cargo-watch
+    pkgs.tailwindcss-language-server
+    pkgs.rustywind
   ];
 
   # https://devenv.sh/scripts/
@@ -25,7 +27,17 @@
   languages.rust.enable = true;
 
   # https://devenv.sh/pre-commit-hooks/
-  # pre-commit.hooks.shellcheck.enable = true;
+  pre-commit.hooks = {
+    actionlint.enable = true;
+    cargo-check.enable = true;
+    clippy.enable = true;
+    rustfmt.enable = true;
+    rustywind = {
+      enable = true;
+      entry = "rustywind";
+      files = "\.rs$";
+    };
+  };
 
   # https://devenv.sh/processes/
   processes.watch.exec = "cargo watch --exec run";
