@@ -1,0 +1,88 @@
+_version: 2
+contact:
+  en: Contact
+  da: Kontakt
+running:
+  en: Running
+  da: Løb
+pc-building:
+  en: PC building
+  da: PC-bygning
+keyboards:
+  en: Mechanical keyboards
+  da: Mekaniske tastaturer
+may:
+  en: May 2017
+  da: Maj 2017
+iti-exp-1:
+  en: Developed the backend for a cloud-based property management system (PMS), that targets the hospitality industry.
+  da: Udviklede backend til et cloud-baseret ejendomsadministration system (PMS), der er målrettet mod hotel- og
+    restaurationsbranchen.
+iti-exp-2:
+  en: Worked with many different aspects of software development, date and time management, authorisation and
+    authentication, APIs, and integration with hardware systems such as Nets payment terminals and Axis network door controllers.
+  da: Arbejdede med mange forskellige aspekter af softwareudvikling, dato- og tidsstyring, authorization og
+    authentication API'er og integration med hardwaresystemer som Nets betalingsterminaler og Axis netværksdørcontrollere.
+mk-site:
+  en: https://mindkey.com
+  da: https://mindkey.dk
+mk-exp:
+  en: Developed a number of Azure Functions for various features, generating error reports, synchronising data between
+    services.
+  da: Udviklet en række Azure Functions til forskellige funktioner, generering af fejlrapporter, synkronisering af data
+    mellem tjenester.
+comm-exp:
+  en: Part of a large platform lift for PensionDanmark across multiple projects, CRM, login, and more.
+  da: Del af et stort platformslift for PensionDanmark på tværs flere projekter, CRM, login og mere.
+jan:
+  en: January 2022
+  da: Januar 2022
+ezp-site:
+  en: https://eazyproject.net/en
+  da: https://eazyproject.net
+ezp-exp-1:
+  en: Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform, and bring it to the cloud.
+  da: Lead på et platformslift for at opgradere en ASP.NET Web Forms-app til en moderne platform, og bringe den i skyen.
+ezp-exp-2:
+  en: Built a multi-tenant server that can manage multiple databases with differing schemas. Supporting OAuth 2.0,
+    OpenID Connect, and a GraphQL API.
+  da: Bygget en multi-tenant server, der kan administrere flere databaser med forskellige skemaer. Understøtter OAuth
+    2.0, OpenID Connect, og med et GraphQL API.
+ezp-exp-3:
+  en: Later got the role of Tech Lead and responsibility of the company's tech stack, software infrastructure, DevOps,
+    and developer training.
+  da: Senere fik rollen som Tech Lead og ansvar for virksomhedens tech stack, softwareinfrastruktur, DevOps og
+    uddannelse af udviklere.
+lang-link:
+  en: Go to danish site
+  da: Gå til engelsk site
+img-alt:
+  en: Bald white male, with short full beard, dressed in a navy blazer and gray shirt.
+  da: Skaldet hvid mand, med kort fuldskæg, klædt i en marineblå blazer og grå skjorte.
+skills:
+  en: Skills
+  da: Færdigheder
+hobbies:
+  en: Hobbies
+  da: Hobbyer
+profile:
+  en: Profile
+  da: Profil
+description:
+  en: I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend
+    much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software
+    world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software
+    together. What I like most about software development is building tools and foundations for others so they can focus
+    on implementation and business logic. As a person, I am modest, calm, and always willing to help others.
+  da: Jeg er en passioneret softwareudvikler, der stræber efter at bygge sikre, stabile og hurtige softwareløsninger.
+    Jeg bruger meget af min tid på at undersøge de nyeste frameworks og værktøjer, så jeg kan holde trit med den evigt
+    udviklende softwareverden. Jeg elsker at lære og dele det jeg har lært med mine kolleger, så vi alle kan nyde at
+    udvikle software sammen. Det jeg bedst kan lide ved softwareudvikling, er at bygge værktøjer og fundamenter for
+    andre, så de kan fokusere på implementering og forretningslogik. Som person er jeg beskeden, rolig og altid villig
+    til at hjælpe andre.
+experience:
+  en: Experience
+  da: Erfaring
+education:
+  en: Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology
+  da: Datamatiker - Erhvervsakademi Sjælland

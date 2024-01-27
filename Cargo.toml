@@ -7,3 +7,4 @@ edition = "2021"
 
 [dependencies]
 markup = "0.13.1"
+rust-i18n = "3.0.1"

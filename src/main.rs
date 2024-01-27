@@ -1,7 +1,11 @@
 use std::{error::Error, fs, process::Command};
 
+use rust_i18n::t;
+
+rust_i18n::i18n!("locales");
+
 markup::define! {
-    Button(href: &'static str, icon: &'static str, name: &'static str, alt: &'static str) {
+    Button(href: &'static str, icon: &'static str, name: String, alt: &'static str) {
         a[
             href=href,
             target="_blank",
@@ -15,7 +19,7 @@ markup::define! {
 }
 
 impl Button {
-    fn new(href: &'static str, icon: &'static str, name: &'static str, alt: &'static str) -> Self {
+    fn new(href: &'static str, icon: &'static str, name: String, alt: &'static str) -> Self {
         Self {
             href,
             icon,
@@ -58,7 +62,7 @@ impl Skill {
 }
 
 markup::define! {
-    Hobby(icon: &'static str, name: &'static str) {
+    Hobby(icon: &'static str, name: String) {
         div[class="flex flex-row items-center rounded-sm"] {
             span[class=format!("mr-1 w-8 h-8 {icon} print:hidden")]{}
             @name
@@ -67,18 +71,18 @@ markup::define! {
 }
 
 impl Hobby {
-    fn new(icon: &'static str, name: &'static str) -> Self {
+    fn new(icon: &'static str, name: String) -> Self {
         Self { icon, name }
     }
 }
 
 markup::define! {
     Experience(
-        date: &'static str,
-        href: &'static str,
+        date: String,
+        href: String,
         color: &'static str,
         name: &'static str,
-        items: Vec<&'static str>,
+        items: Vec<String>,
     ) {
         li {
             p[class="text-sm text-gray-500 print:text-xs"] { @date }
@@ -91,12 +95,7 @@ markup::define! {
 }
 
 impl Experience {
-    fn new(
-        date: &'static str,
-        href: &'static str,
-        color: &'static str,
-        name: &'static str,
-    ) -> Self {
+    fn new(date: String, href: String, color: &'static str, name: &'static str) -> Self {
         Self {
             date,
             href,
@@ -106,7 +105,7 @@ impl Experience {
         }
     }
 
-    fn item(mut self, item: &'static str) -> Self {
+    fn item(mut self, item: String) -> Self {
         self.items.push(item);
         self
     }
@@ -116,18 +115,18 @@ markup::define! {
     Page<'a>(
         lang: &'a str,
         lang_a: &'a str,
-        lang_l: &'a str,
+        lang_l: String,
         flag: &'a str,
-        img_alt: &'a str,
+        img_alt: String,
         buttons: Vec<Button>,
-        skills_h: &'a str,
+        skills_h: String,
         skills: &'a Vec<Skill>,
-        hobbies_h: &'a str,
+        hobbies_h: String,
         hobbies: Vec<Hobby>,
-        profile_h: &'a str,
-        profile: &'a str,
-        exp_h: &'a str,
-        edu: &'a str,
+        profile_h: String,
+        profile: String,
+        exp_h: String,
+        edu: String,
         experiences: Vec<Experience>,
     ) {
         @markup::doctype()
@@ -212,6 +211,8 @@ markup::define! {
     }
 }
 
+const LOCALES: [&str; 2] = ["en", "da"];
+
 fn main() -> Result<(), Box<dyn Error>> {
     Command::new("sh").arg("-c").arg("bun install").output()?;
     Command::new("sh")
@@ -222,48 +223,6 @@ fn main() -> Result<(), Box<dyn Error>> {
             "bun run min"
         })
         .output()?;
-
-    let buttons_en = vec![
-        Button::new(
-            "mailto:exempts_chill_0c@icloud.com",
-            "i-tabler-mail",
-            "Contact",
-            "exempts_chill_0c@icloud.com",
-        ),
-        Button::new(
-            "https://github.com/danbluhmhansen",
-            "i-simple-icons-github",
-            "GitHub",
-            "github.com/danbluhmhansen",
-        ),
-        Button::new(
-            "https://linkedin.com/in/dan-hansen-2b555915b",
-            "i-simple-icons-linkedin",
-            "LinkedIn",
-            "linkedin.com/in/dan-hansen-2b555915b",
-        ),
-    ];
-
-    let buttons_da = vec![
-        Button::new(
-            "mailto:exempts_chill_0c@icloud.com",
-            "i-tabler-mail",
-            "Kontakt",
-            "exempts_chill_0c@icloud.com",
-        ),
-        Button::new(
-            "https://github.com/danbluhmhansen",
-            "i-simple-icons-github",
-            "GitHub",
-            "github.com/danbluhmhansen",
-        ),
-        Button::new(
-            "https://linkedin.com/in/dan-hansen-2b555915b",
-            "i-simple-icons-linkedin",
-            "LinkedIn",
-            "linkedin.com/in/dan-hansen-2b555915b",
-        ),
-    ];
 
     let skills = &vec![
         Skill::new("https://learn.microsoft.com/en-us/aspnet/core", "ASP.NET")
@@ -297,86 +256,109 @@ fn main() -> Result<(), Box<dyn Error>> {
             .icon("i-simple-icons-terraform", "text-[#7b42bc]"),
     ];
 
-    let hobbies_en = vec![
-        Hobby::new("i-tabler-run", "Running"),
-        Hobby::new("i-tabler-device-gamepad-2", "Gaming"),
-        Hobby::new("i-simple-icons-linux", "Linux"),
-        Hobby::new("i-tabler-devices-pc", "PC building"),
-        Hobby::new("i-tabler-keyboard", "Mechanical keyboards"),
-    ];
-
-    let hobbies_da = vec![
-        Hobby::new("i-tabler-run", "Løb"),
-        Hobby::new("i-tabler-device-gamepad-2", "Gaming"),
-        Hobby::new("i-simple-icons-linux", "Linux"),
-        Hobby::new("i-tabler-devices-pc", "PC-bygning"),
-        Hobby::new("i-tabler-keyboard", "Mekaniske tastaturer"),
-    ];
-
-    let experiences_en = vec![
-        Experience::new("May 2017", "https://itinstituttet.dk", "a-neutral", "IT Instituttet")
-            .item("Developed the backend for a cloud-based property management system (PMS), that targets the hospitality industry.")
-            .item("Worked with many different aspects of software development, date and time management, authorisation and authentication, APIs, and integration with hardware systems such as Nets payment terminals and Axis network door controllers."),
-        Experience::new("September 2020", "https://mindkey.com", "a-green", "MindKey")
-            .item("Developed a number of Azure Functions for various features, generating error reports, synchronising data between services."),
-        Experience::new("December 2020", "https://commentor.dk", "a-orange", "Commentor")
-            .item("Part of a large platform lift for PensionDanmark across multiple projects, CRM, login, and more."),
-        Experience::new("January 2022", "https://eazyproject.net/en", "a-sky", "EazyProject")
-            .item("Lead on a platform lift to migrate an ASP.NET Web Forms app to a modern platform, and bring it to the cloud.")
-            .item("Built a multi-tenant server that can manage multiple databases with differing schemas. Supporting OAuth 2.0, OpenID Connect, and a GraphQL API.")
-            .item("Later got the role of Tech Lead and responsibility of the company's tech stack, software infrastructure, DevOps, and developer training."),
-    ];
-
-    let experiences_da = vec![
-        Experience::new("Maj 2017", "https://itinstituttet.dk", "a-neutral", "IT Instituttet")
-            .item("Udviklede backend til et cloud-baseret ejendomsadministration system (PMS), der er målrettet mod hotel- og restaurationsbranchen.")
-            .item("Arbejdede med mange forskellige aspekter af softwareudvikling, dato- og tidsstyring, authorization og authentication API'er og integration med hardwaresystemer som Nets betalingsterminaler og Axis netværksdørcontrollere."),
-        Experience::new("September 2020", "https://mindkey.dk", "a-green", "MindKey")
-            .item("Udviklet en række Azure Functions til forskellige funktioner, generering af fejlrapporter, synkronisering af data mellem tjenester."),
-        Experience::new("December 2020", "https://commentor.dk", "a-orange", "Commentor")
-            .item("Del af et stort platformslift for PensionDanmark på tværs flere projekter, CRM, login og mere."),
-        Experience::new("Januar 2022", "https://eazyproject.net", "a-sky", "EazyProject")
-            .item("Lead på et platformslift for at opgradere en ASP.NET Web Forms-app til en moderne platform, og bringe den i skyen.")
-            .item("Bygget en multi-tenant server, der kan administrere flere databaser med forskellige skemaer. Understøtter OAuth 2.0, OpenID Connect, og med et GraphQL API.")
-            .item("Senere fik rollen som Tech Lead og ansvar for virksomhedens tech stack, softwareinfrastruktur, DevOps og uddannelse af udviklere."),
-    ];
-
     fs::create_dir_all("_site")?;
-    fs::write("_site/index.html", Page {
-        lang: "en",
-        lang_a: "da.html",
-        lang_l: "Gå til engelsk site",
-        flag: "i-flag-dk-4x3",
-        img_alt: "Bald white male, with short full beard, dressed in a navy blazer and gray shirt.",
-        buttons: buttons_en,
-        skills_h: "Skills",
-        skills,
-        hobbies_h: "Hobbies",
-        hobbies: hobbies_en,
-        profile_h: "Profile",
-        profile: "I am a passionate software developer who strives to build secure, stable, and fast software solutions. I spend much of my time researching the latest frameworks and tools so that I can keep up with the ever-changing software world. I love to learn and to share what I have learned with my colleagues, so we can all enjoy developing software together. What I like most about software development is building tools and foundations for others so they can focus on implementation and business logic. As a person, I am modest, calm, and always willing to help others.",
-        exp_h: "Experience",
-        edu: "Academy Profession (AP) degree in Computer Science - Zealand Institute of Business and Technology",
-        experiences: experiences_en,
-    }.to_string())?;
 
-    fs::write("_site/da.html", Page {
-        lang: "da",
-        lang_a: "index.html",
-        lang_l: "Go to danish site",
-        flag: "i-flag-gb-4x3",
-        img_alt: "Skaldet hvid mand, med kort fuldskæg, klædt i en marineblå blazer og grå skjorte.",
-        buttons: buttons_da,
-        skills_h: "Færdigheder",
-        skills,
-        hobbies_h: "Hobbyer",
-        hobbies: hobbies_da,
-        profile_h: "Profil",
-        profile: "Jeg er en passioneret softwareudvikler, der stræber efter at bygge sikre, stabile og hurtige softwareløsninger. Jeg bruger meget af min tid på at undersøge de nyeste frameworks og værktøjer, så jeg kan holde trit med den evigt udviklende softwareverden. Jeg elsker at lære og dele det jeg har lært med mine kolleger, så vi alle kan nyde at udvikle software sammen. Det jeg bedst kan lide ved softwareudvikling, er at bygge værktøjer og fundamenter for andre, så de kan fokusere på implementering og forretningslogik. Som person er jeg beskeden, rolig og altid villig til at hjælpe andre.",
-        exp_h: "Erfaring",
-        edu: " Datamatiker - Erhvervsakademi Sjælland ",
-        experiences: experiences_da,
-    }.to_string())?;
+    for locale in LOCALES {
+        let buttons = vec![
+            Button::new(
+                "mailto:exempts_chill_0c@icloud.com",
+                "i-tabler-mail",
+                t!("contact", locale = locale).into(),
+                "exempts_chill_0c@icloud.com",
+            ),
+            Button::new(
+                "https://github.com/danbluhmhansen",
+                "i-simple-icons-github",
+                "GitHub".into(),
+                "github.com/danbluhmhansen",
+            ),
+            Button::new(
+                "https://linkedin.com/in/dan-hansen-2b555915b",
+                "i-simple-icons-linkedin",
+                "LinkedIn".into(),
+                "linkedin.com/in/dan-hansen-2b555915b",
+            ),
+        ];
+
+        let hobbies = vec![
+            Hobby::new("i-tabler-run", t!("running", locale = locale).into()),
+            Hobby::new("i-tabler-device-gamepad-2", "Gaming".into()),
+            Hobby::new("i-simple-icons-linux", "Linux".into()),
+            Hobby::new(
+                "i-tabler-devices-pc",
+                t!("pc-building", locale = locale).into(),
+            ),
+            Hobby::new("i-tabler-keyboard", t!("keyboards", locale = locale).into()),
+        ];
+
+        let experiences = vec![
+            Experience::new(
+                t!("may", locale = locale).into(),
+                "https://itinstituttet.dk".into(),
+                "a-neutral",
+                "IT Instituttet",
+            )
+            .item(t!("iti-exp-1", locale = locale).into())
+            .item(t!("iti-exp-2", locale = locale).into()),
+            Experience::new(
+                "September 2020".into(),
+                t!("mk-site", locale = locale).into(),
+                "a-green",
+                "MindKey",
+            )
+            .item(t!("mk-exp", locale = locale).into()),
+            Experience::new(
+                "December 2020".into(),
+                "https://commentor.dk".into(),
+                "a-orange",
+                "Commentor",
+            )
+            .item(t!("comm-exp", locale = locale).into()),
+            Experience::new(
+                t!("jan", locale = locale).into(),
+                t!("ezp-site", locale = locale).into(),
+                "a-sky",
+                "EazyProject",
+            )
+            .item(t!("ezp-exp-1", locale = locale).into())
+            .item(t!("ezp-exp-2", locale = locale).into())
+            .item(t!("ezp-exp-3", locale = locale).into()),
+        ];
+
+        fs::write(
+            match locale {
+                "en" => "_site/index.html",
+                "da" => "_site/da.html",
+                _ => unreachable!(),
+            },
+            Page {
+                lang: locale,
+                lang_a: match locale {
+                    "en" => "da.html",
+                    "da" => "/",
+                    _ => unreachable!(),
+                },
+                lang_l: t!("lang-link", locale = locale).into(),
+                flag: match locale {
+                    "en" => "i-flag-dk-4x3",
+                    "da" => "i-flag-gb-4x3",
+                    _ => unreachable!(),
+                },
+                img_alt: t!("img-alt", locale = locale).into(),
+                buttons,
+                skills_h: t!("skills", locale = locale).into(),
+                skills,
+                hobbies_h: t!("hobbies", locale = locale).into(),
+                hobbies,
+                profile_h: t!("profile", locale = locale).into(),
+                profile: t!("description", locale = locale).into(),
+                exp_h: t!("experience", locale = locale).into(),
+                edu: t!("education", locale = locale).into(),
+                experiences,
+            }
+            .to_string(),
+        )?;
+    }
 
     Ok(())
 }
