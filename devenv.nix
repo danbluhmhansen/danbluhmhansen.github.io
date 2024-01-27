@@ -16,12 +16,7 @@
   ];
 
   # https://devenv.sh/scripts/
-  # scripts.hello.exec = "echo hello from $GREET";
-
-  # enterShell = ''
-  #   hello
-  #   git --version
-  # '';
+  scripts.publish.exec = "cargo run --release";
 
   # https://devenv.sh/languages/
   languages.rust.enable = true;

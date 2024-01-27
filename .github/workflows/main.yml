@@ -29,12 +29,15 @@ jobs:
       url: ${{ steps.deployment.outputs.page_url }}
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v3
-      - uses: actions/configure-pages@v3
-      - run: rustup toolchain install stable --profile minimal
-      - uses: oven-sh/setup-bun@v1
-      - uses: actions/setup-node@v4.0.0
-      - run: cargo run --release
-      - uses: actions/upload-pages-artifact@v2
-      - uses: actions/deploy-pages@v2
+      - uses: actions/checkout@v4
+      - uses: cachix/install-nix-action@v23
+      - uses: cachix/cachix-action@v12
+        with:
+          name: devenv
+      - name: Install devenv.sh
+        run: nix profile install tarball+https://install.devenv.sh/latest
+      - uses: actions/configure-pages@v4
+      - run: devenv shell publish
+      - uses: actions/upload-pages-artifact@v3
+      - uses: actions/deploy-pages@v4
         id: deployment
