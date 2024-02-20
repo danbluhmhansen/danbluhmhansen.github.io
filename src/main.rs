@@ -1,6 +1,6 @@
 use std::{error::Error, fs, process::Command};
 
-use components::{button::Button, experience::Experience, hobby::Hobby, skill::Skill, Page};
+use components::{button::button, experience::experience, hobby::hobby, page, skill::skill};
 use rust_i18n::t;
 
 mod components;
@@ -21,54 +21,105 @@ fn main() -> Result<(), Box<dyn Error>> {
         .output()?;
 
     let skills = &vec![
-        Skill::new("https://learn.microsoft.com/en-us/aspnet/core", "ASP.NET")
-            .icon("i-simple-icons-dotnet", "text-[#512bd4]"),
-        Skill::new("https://learn.microsoft.com/en-us/azure", "Azure")
-            .icon("i-simple-icons-microsoftazure", "text-[#0078d4]"),
-        Skill::new(
+        skill(
+            "https://learn.microsoft.com/en-us/aspnet/core",
+            "ASP.NET",
+            Some("i-simple-icons-dotnet"),
+            Some("text-[#512bd4]"),
+        ),
+        skill(
+            "https://learn.microsoft.com/en-us/azure",
+            "Azure",
+            Some("i-simple-icons-microsoftazure"),
+            Some("text-[#0078d4]"),
+        ),
+        skill(
             "https://learn.microsoft.com/en-us/azure/devops",
             "Azure DevOps",
-        )
-        .icon("i-simple-icons-azuredevops", "text-[#0078d4]"),
-        Skill::new("https://docker.com", "Docker").icon("i-simple-icons-docker", "text-[#2496ed]"),
-        Skill::new("https://learn.microsoft.com/en-us/ef", "Entity Framework")
-            .icon("i-devicon-plain-dot-net", "text-[#1384c8]"),
-        Skill::new("https://graphql.org", "GraphQL")
-            .icon("i-simple-icons-graphql", "text-[#e10098]"),
-        Skill::new("https://oauth.net", "OAuth 2.0"),
-        Skill::new("https://www.odata.org", "OData"),
-        Skill::new("https://openapis.org", "OpenAPI")
-            .icon("i-simple-icons-openapiinitiative", "text-[#6ba539]"),
-        Skill::new("https://openid.net/connect", "OpenID Connect")
-            .icon("i-simple-icons-openid", "text-[#f78c40]"),
-        Skill::new("https://postgresql.org", "PostgreSQL")
-            .icon("i-simple-icons-postgresql", "text-[#4169e1]"),
-        Skill::new("https://react.dev", "React").icon("i-simple-icons-react", "text-[#61dafb]"),
-        Skill::new("https://rust-lang.org", "Rust")
-            .icon("i-simple-icons-rust", "dark:text-gray-500"),
-        Skill::new("https://learn.microsoft.com/en-us/sql", "SQL Server")
-            .icon("i-simple-icons-microsoftsqlserver", "text-[#cc2927]"),
-        Skill::new("https://terraform.io", "Terraform")
-            .icon("i-simple-icons-terraform", "text-[#7b42bc]"),
+            Some("i-simple-icons-azuredevops"),
+            Some("text-[#0078d4]"),
+        ),
+        skill(
+            "https://docker.com",
+            "Docker",
+            Some("i-simple-icons-docker"),
+            Some("text-[#2496ed]"),
+        ),
+        skill(
+            "https://learn.microsoft.com/en-us/ef",
+            "Entity Framework",
+            Some("i-devicon-plain-dot-net"),
+            Some("text-[#1384c8]"),
+        ),
+        skill(
+            "https://graphql.org",
+            "GraphQL",
+            Some("i-simple-icons-graphql"),
+            Some("text-[#e10098]"),
+        ),
+        skill("https://oauth.net", "OAuth 2.0", None, None),
+        skill("https://www.odata.org", "OData", None, None),
+        skill(
+            "https://openapis.org",
+            "OpenAPI",
+            Some("i-simple-icons-openapiinitiative"),
+            Some("text-[#6ba539]"),
+        ),
+        skill(
+            "https://openid.net/connect",
+            "OpenID Connect",
+            Some("i-simple-icons-openid"),
+            Some("text-[#f78c40]"),
+        ),
+        skill(
+            "https://postgresql.org",
+            "PostgreSQL",
+            Some("i-simple-icons-postgresql"),
+            Some("text-[#4169e1]"),
+        ),
+        skill(
+            "https://react.dev",
+            "React",
+            Some("i-simple-icons-react"),
+            Some("text-[#61dafb]"),
+        ),
+        skill(
+            "https://rust-lang.org",
+            "Rust",
+            Some("i-simple-icons-rust"),
+            Some("dark:text-gray-500"),
+        ),
+        skill(
+            "https://learn.microsoft.com/en-us/sql",
+            "SQL Server",
+            Some("i-simple-icons-microsoftsqlserver"),
+            Some("text-[#cc2927]"),
+        ),
+        skill(
+            "https://terraform.io",
+            "Terraform",
+            Some("i-simple-icons-terraform"),
+            Some("text-[#7b42bc]"),
+        ),
     ];
 
     fs::create_dir_all("_site")?;
 
     for locale in LOCALES {
         let buttons = vec![
-            Button::new(
+            button(
                 "mailto:exempts_chill_0c@icloud.com",
                 "i-tabler-mail",
                 t!("contact", locale = locale).into(),
                 "exempts_chill_0c@icloud.com",
             ),
-            Button::new(
+            button(
                 "https://github.com/danbluhmhansen",
                 "i-simple-icons-github",
                 "GitHub".into(),
                 "github.com/danbluhmhansen",
             ),
-            Button::new(
+            button(
                 "https://linkedin.com/in/dan-hansen-2b555915b",
                 "i-simple-icons-linkedin",
                 "LinkedIn".into(),
@@ -77,48 +128,52 @@ fn main() -> Result<(), Box<dyn Error>> {
         ];
 
         let hobbies = vec![
-            Hobby::new("i-tabler-run", t!("running", locale = locale).into()),
-            Hobby::new("i-tabler-device-gamepad-2", "Gaming".into()),
-            Hobby::new("i-simple-icons-linux", "Linux".into()),
-            Hobby::new(
+            hobby("i-tabler-run", t!("running", locale = locale).into()),
+            hobby("i-tabler-device-gamepad-2", "Gaming".into()),
+            hobby("i-simple-icons-linux", "Linux".into()),
+            hobby(
                 "i-tabler-devices-pc",
                 t!("pc-building", locale = locale).into(),
             ),
-            Hobby::new("i-tabler-keyboard", t!("keyboards", locale = locale).into()),
+            hobby("i-tabler-keyboard", t!("keyboards", locale = locale).into()),
         ];
 
         let experiences = vec![
-            Experience::new(
+            experience(
                 t!("may", locale = locale).into(),
                 "https://itinstituttet.dk".into(),
                 "a-neutral",
                 "IT Instituttet",
-            )
-            .item(t!("iti-exp-1", locale = locale).into())
-            .item(t!("iti-exp-2", locale = locale).into()),
-            Experience::new(
+                vec![
+                    t!("iti-exp-1", locale = locale).into(),
+                    t!("iti-exp-2", locale = locale).into(),
+                ],
+            ),
+            experience(
                 "September 2020".into(),
                 t!("mk-site", locale = locale).into(),
                 "a-green",
                 "MindKey",
-            )
-            .item(t!("mk-exp", locale = locale).into()),
-            Experience::new(
+                vec![t!("mk-exp", locale = locale).into()],
+            ),
+            experience(
                 "December 2020".into(),
                 "https://commentor.dk".into(),
                 "a-orange",
                 "Commentor",
-            )
-            .item(t!("comm-exp", locale = locale).into()),
-            Experience::new(
+                vec![t!("comm-exp", locale = locale).into()],
+            ),
+            experience(
                 t!("jan", locale = locale).into(),
                 t!("ezp-site", locale = locale).into(),
                 "a-sky",
                 "EazyProject",
-            )
-            .item(t!("ezp-exp-1", locale = locale).into())
-            .item(t!("ezp-exp-2", locale = locale).into())
-            .item(t!("ezp-exp-3", locale = locale).into()),
+                vec![
+                    t!("ezp-exp-1", locale = locale).into(),
+                    t!("ezp-exp-2", locale = locale).into(),
+                    t!("ezp-exp-3", locale = locale).into(),
+                ],
+            ),
         ];
 
         fs::write(
@@ -127,32 +182,32 @@ fn main() -> Result<(), Box<dyn Error>> {
                 "da" => "_site/da.html",
                 _ => unreachable!(),
             },
-            Page {
-                lang: locale,
-                lang_a: match locale {
+            page(
+                locale,
+                match locale {
                     "en" => "da.html",
                     "da" => "/",
                     _ => unreachable!(),
                 },
-                lang_l: t!("lang-link", locale = locale).into(),
-                flag: match locale {
+                t!("lang-link", locale = locale).into(),
+                match locale {
                     "en" => "i-flag-dk-4x3",
                     "da" => "i-flag-gb-4x3",
                     _ => unreachable!(),
                 },
-                img_alt: t!("img-alt", locale = locale).into(),
+                t!("img-alt", locale = locale).into(),
                 buttons,
-                skills_h: t!("skills", locale = locale).into(),
+                t!("skills", locale = locale).into(),
                 skills,
-                hobbies_h: t!("hobbies", locale = locale).into(),
+                t!("hobbies", locale = locale).into(),
                 hobbies,
-                profile_h: t!("profile", locale = locale).into(),
-                profile: t!("description", locale = locale).into(),
-                exp_h: t!("experience", locale = locale).into(),
-                edu: t!("education", locale = locale).into(),
+                t!("profile", locale = locale).into(),
+                t!("description", locale = locale).into(),
+                t!("experience", locale = locale).into(),
+                t!("education", locale = locale).into(),
                 experiences,
-            }
-            .to_string(),
+            )
+            .into_string(),
         )?;
     }
 

@@ -1,14 +1,10 @@
-markup::define! {
-    Hobby(icon: &'static str, name: String) {
-        div[class="flex flex-row items-center rounded-sm"] {
-            span[class=format!("mr-1 w-8 h-8 {icon} print:hidden")]{}
-            @name
-        }
-    }
-}
+use maud::{html, Markup};
 
-impl Hobby {
-    pub fn new(icon: &'static str, name: String) -> Self {
-        Self { icon, name }
+pub fn hobby(icon: &'static str, name: String) -> Markup {
+    html! {
+        div class="flex flex-row items-center rounded-sm" {
+            span class={"mr-1 w-8 h-8 print:hidden " (icon)} {}
+            (name)
+        }
     }
 }
